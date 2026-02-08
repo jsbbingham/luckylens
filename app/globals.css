@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --lucky-primary: 99 102 241;
+    --lucky-secondary: 139 92 246;
+    --lucky-accent: 245 158 11;
+  }
+}
+
+@layer utilities {
+  .animate-slide-up {
+    animation: slide-up 0.3s ease-out;
+  }
+  
+  .animate-fade-in {
+    animation: fade-in 0.3s ease-out;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply antialiased;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-lucky-background dark:bg-lucky-dark-background;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-lucky-border dark:bg-lucky-dark-border rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-lucky-text-muted dark:bg-lucky-dark-text-muted;
+}
+
+/* Selection */
+::selection {
+  @apply bg-lucky-primary/30 dark:bg-lucky-primary/40;
+}
