@@ -15,13 +15,19 @@ export function useDrawResults() {
 
   /**
    * Convert Magayo result to HistoricalDraw format
+   * Parses date correctly to avoid timezone shifts (treats YYYY-MM-DD as local date)
    */
   const magayoToHistoricalDraw = useCallback((
     gameId: string,
     result: MagayoResult
   ): HistoricalDraw => {
+    // Parse YYYY-MM-DD without timezone shift
+    // Split and create date at noon to avoid any DST issues
+    const [year, month, day] = result.date.split('-').map(Number);
+    const parsedDate = new Date(year, month - 1, day, 12, 0, 0);
+    
     return {
-      date: new Date(result.date),
+      date: parsedDate,
       gameId,
       primaryNumbers: result.mainBalls,
       secondaryNumbers: [result.bonusBall],
