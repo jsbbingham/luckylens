@@ -1,6 +1,7 @@
 #!/bin/bash
 # LuckyLens GitHub Repository Setup Script
 # Run this script to create the repo and push all code
+# Set GITHUB_TOKEN environment variable before running
 
 set -e  # Exit on error
 
@@ -8,13 +9,13 @@ echo "🚀 Setting up LuckyLens GitHub repository..."
 echo ""
 
 # Configuration
-GITHUB_TOKEN="${GITHUB_TOKEN:?Set GITHUB_TOKEN environment variable before running}"
+GITHUB_TOKEN="${GITHUB_TOKEN:-}"
 REPO_NAME="luckylens"
 PROJECT_DIR="/home/syebrex/.openclaw/workspace/luckylens"
 
 # Get GitHub username
 echo "📋 Getting your GitHub username..."
-USERNAME=$(curl -s -H "Authorization: token $GITHUB_TOKEN" -H "Accept: application/vnd.github.v3+json" https://api.github.com/user | grep '"login"' | head -1 | cut -d'"' -f4)
+USERNAME=$(curl -s -H "Authorization: token $GITHUB_TOKEN" -H "Accept: application/vnd.github.v3+json" https://api.github.com/user | jq -r '.login')
 
 if [ -z "$USERNAME" ]; then
     echo "❌ Failed to get GitHub username. Check your token."
