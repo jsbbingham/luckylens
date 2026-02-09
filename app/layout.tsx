@@ -15,17 +15,14 @@ export const metadata: Metadata = {
   manifest: '/manifest.json',
   icons: {
     icon: [
-      { url: '/icons/icon-72x72.png', sizes: '72x72', type: 'image/png' },
-      { url: '/icons/icon-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icons/icon.svg', sizes: 'any', type: 'image/svg+xml' },
     ],
     apple: [
-      { url: '/icons/icon-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icons/icon.svg', sizes: 'any', type: 'image/svg+xml' },
     ],
   },
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: 'default',
-    title: 'LuckyLens',
+  other: {
+    'mobile-web-app-capable': 'yes',
   },
   openGraph: {
     type: 'website',

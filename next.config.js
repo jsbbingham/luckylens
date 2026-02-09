@@ -1,16 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  output: 'export',
-  distDir: 'dist',
+  // Note: Removed 'output: export' to enable API routes for CORS proxy
+  // This enables serverless functions on Vercel
   trailingSlash: true,
   images: {
     unoptimized: true,
   },
-  // For dev server deployment - adjust as needed
-  assetPrefix: process.env.NODE_ENV === 'production' ? undefined : undefined,
   env: {
     NEXT_PUBLIC_MAGAYO_API_KEY: process.env.NEXT_PUBLIC_MAGAYO_API_KEY || 'rtAf5eNS3BGdVXh8fr',
+    MAGAYO_API_KEY: process.env.MAGAYO_API_KEY || 'rtAf5eNS3BGdVXh8fr',
   },
 }
 

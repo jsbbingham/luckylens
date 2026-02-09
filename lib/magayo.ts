@@ -1,7 +1,8 @@
 import { LotteryGame } from '@/types';
 
-const MAGAYO_API_KEY = process.env.NEXT_PUBLIC_MAGAYO_API_KEY || '';
-const MAGAYO_BASE_URL = 'https://www.magayo.com/api';
+// Use local API proxy to avoid CORS issues
+const API_BASE_URL = typeof window !== 'undefined' ? '' : 'https://www.magayo.com/api';
+const USE_PROXY = true; // Set to true to use local API proxy
 
 // Map internal game IDs to Magayo game IDs
 const GAME_ID_MAP: Record<string, string> = {
@@ -32,9 +33,13 @@ export async function fetchLatestResults(gameId: string): Promise<MagayoResult |
   }
   
   try {
-    const response = await fetch(
-      `${MAGAYO_BASE_URL}/results.php?api_key=${MAGAYO_API_KEY}&game=${magayoGameId}`
-    );
+    // Use local proxy API to avoid CORS issues in browser
+    const isBrowser = typeof window !== 'undefined';
+    const apiUrl = isBrowser && USE_PROXY
+      ? `/api/lottery?game=${magayoGameId}`
+      : `https://www.magayo.com/api/results.php?api_key=rtAf5eNS3BGdVXh8fr&game=${magayoGameId}`;
+    
+    const response = await fetch(apiUrl);
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
