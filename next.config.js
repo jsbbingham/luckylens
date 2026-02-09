@@ -3,7 +3,6 @@ const nextConfig = {
   reactStrictMode: true,
   // Note: Removed 'output: export' to enable API routes for CORS proxy
   // This enables serverless functions on Vercel
-  trailingSlash: true,
   images: {
     unoptimized: true,
   },
