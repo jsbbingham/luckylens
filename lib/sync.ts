@@ -38,6 +38,7 @@ export async function fetchDrawResults(gameId: string): Promise<HistoricalDraw[]
   const data: DrawResultJson[] = await response.json();
   
   // Map JSON format to HistoricalDraw type
+  const postedAt = new Date(); // Current timestamp when synced
   return data.map(entry => ({
     date: new Date(entry.drawDate),
     gameId,
@@ -45,6 +46,7 @@ export async function fetchDrawResults(gameId: string): Promise<HistoricalDraw[]
     secondaryNumbers: [entry.bonusBall],
     jackpot: entry.jackpotAmount,
     winners: 0, // Not tracked in sample data
+    postedAt, // Timestamp when results were synced/posted
   }));
 }
 

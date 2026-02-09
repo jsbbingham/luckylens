@@ -1,0 +1,12 @@
+[
+  {"drawDate": "2026-02-08", "mainBalls": [5, 14, 23, 31, 38], "bonusBall": 0, "jackpotAmount": "$125,000"},
+  {"drawDate": "2026-02-07", "mainBalls": [8, 17, 26, 33, 39], "bonusBall": 0, "jackpotAmount": "$118,000"},
+  {"drawDate": "2026-02-06", "mainBalls": [3, 12, 21, 29, 37], "bonusBall": 0, "jackpotAmount": "$105,000"},
+  {"drawDate": "2026-02-05", "mainBalls": [7, 16, 25, 32, 38], "bonusBall": 0, "jackpotAmount": "$98,000"},
+  {"drawDate": "2026-02-04", "mainBalls": [2, 11, 20, 28, 36], "bonusBall": 0, "jackpotAmount": "$92,000"},
+  {"drawDate": "2026-02-03", "mainBalls": [9, 18, 27, 34, 39], "bonusBall": 0, "jackpotAmount": "$85,000"},
+  {"drawDate": "2026-02-02", "mainBalls": [4, 13, 22, 30, 37], "bonusBall": 0, "jackpotAmount": "$78,000"},
+  {"drawDate": "2026-02-01", "mainBalls": [6, 15, 24, 31, 38], "bonusBall": 0, "jackpotAmount": "$72,000"},
+  {"drawDate": "2026-01-31", "mainBalls": [1, 10, 19, 27, 35], "bonusBall": 0, "jackpotAmount": "$65,000"},
+  {"drawDate": "2026-01-30", "mainBalls": [5, 14, 23, 29, 36], "bonusBall": 0, "jackpotAmount": "$58,000"}
+]

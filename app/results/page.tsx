@@ -5,11 +5,12 @@ import { Trophy, RefreshCw, Calendar, AlertTriangle, ChevronDown } from 'lucide-
 import { GameSelector } from '@/components/GameSelector';
 import { Disclaimer } from '@/components/Disclaimer';
 import { ConfirmDialog } from '@/components/ConfirmDialog';
+import { DemoDataWarning } from '@/components/DemoDataWarning';
 import { useToast } from '@/hooks/useToast';
 import { useDrawResults } from '@/hooks/useDrawResults';
 import { getDefaultGame, getGameById } from '@/lib/games';
 import { LotteryGame, HistoricalDraw } from '@/types';
-import { formatDate, formatRelativeTime } from '@/lib/utils';
+import { formatDate, formatRelativeTime, formatDateTimeWithTimezone, formatJackpot } from '@/lib/utils';
 
 export default function ResultsPage() {
   const [selectedGame, setSelectedGame] = useState<LotteryGame>(getDefaultGame());
@@ -176,18 +177,23 @@ export default function ResultsPage() {
         <label className="text-sm font-medium text-lucky-text dark:text-lucky-dark-text">
           Select Lottery Game
         </label>
-        <GameSelector 
+        <GameSelector
           selectedGame={selectedGame}
           onSelectGame={setSelectedGame}
         />
       </div>
 
+      {/* Demo Data Warning */}
+      {selectedGame.isDemoData && (
+        <DemoDataWarning gameName={selectedGame.name} />
+      )}
+
       {/* Sync Controls */}
       <div className="flex items-center justify-between p-4 bg-lucky-surface dark:bg-lucky-dark-surface rounded-xl border border-lucky-border dark:border-lucky-dark-border">
         <div>
           <p className="text-sm text-lucky-text-muted dark:text-lucky-dark-text-muted">
-            {lastSyncDate 
-              ? `Last synced: ${formatRelativeTime(new Date(lastSyncDate))}`
+            {lastSyncDate
+              ? `Last synced: ${formatDateTimeWithTimezone(new Date(lastSyncDate))}`
               : 'Never synced'
             }
           </p>
@@ -260,11 +266,16 @@ export default function ResultsPage() {
               <div className="flex items-start justify-between mb-3">
                 <div>
                   <p className="font-semibold text-lucky-text dark:text-lucky-dark-text">
-                    {formatDate(result.date)}
+                    Drawn: {formatDate(result.date)}
                   </p>
+                  {result.postedAt && (
+                    <p className="text-xs text-lucky-text-muted dark:text-lucky-dark-text-muted">
+                      Posted: {formatDateTimeWithTimezone(result.postedAt)}
+                    </p>
+                  )}
                   {result.jackpot && (
-                    <p className="text-sm text-lucky-gold font-medium">
-                      {result.jackpot}
+                    <p className="text-sm text-lucky-gold font-medium mt-1">
+                      {formatJackpot(result.jackpot)}
                     </p>
                   )}
                 </div>

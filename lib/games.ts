@@ -89,6 +89,7 @@ export const LOTTERY_GAMES: LotteryGame[] = [
     drawDays: ['Monday', 'Thursday'],
     dataFile: '/data/luckyforlife.json',
     bonusBallLabel: 'Lucky Ball',
+    isDemoData: true,
     nextDrawDate: () => {
       const today = new Date();
       const drawDays = [1, 4];
@@ -168,6 +169,146 @@ export const LOTTERY_GAMES: LotteryGame[] = [
       nextDraw.setDate(today.getDate() + daysUntilDraw);
       nextDraw.setHours(22, 0, 0, 0);
       return nextDraw;
+    },
+  },
+  {
+    id: 'superlottoplus',
+    name: 'SuperLotto Plus',
+    region: 'California',
+    primaryColor: 'bg-orange-500',
+    secondaryColor: 'bg-red-600',
+    primaryCount: 5,
+    primaryMax: 47,
+    secondaryCount: 1,
+    secondaryMax: 27,
+    description: 'California\'s original jackpot game since 1986',
+    drawDays: ['Wednesday', 'Saturday'],
+    dataFile: '/data/superlottoplus.json',
+    bonusBallLabel: 'Mega',
+    isDemoData: true,
+    nextDrawDate: () => {
+      const today = new Date();
+      const drawDays = [3, 6]; // Wednesday, Saturday
+      const todayDay = today.getDay();
+      let daysUntilDraw = 0;
+
+      for (const drawDay of drawDays) {
+        if (drawDay > todayDay) {
+          daysUntilDraw = drawDay - todayDay;
+          break;
+        }
+      }
+
+      if (daysUntilDraw === 0) {
+        daysUntilDraw = 7 - todayDay + 3;
+      }
+
+      const nextDraw = new Date(today);
+      nextDraw.setDate(today.getDate() + daysUntilDraw);
+      nextDraw.setHours(19, 45, 0, 0); // 7:45 PM PT
+      return nextDraw;
+    },
+  },
+  {
+    id: 'fantasy5',
+    name: 'Fantasy 5',
+    region: 'California',
+    primaryColor: 'bg-purple-600',
+    secondaryColor: 'bg-pink-500',
+    primaryCount: 5,
+    primaryMax: 39,
+    secondaryCount: 0,
+    secondaryMax: 0,
+    description: 'California\'s daily game with great odds!',
+    drawDays: ['Daily'],
+    dataFile: '/data/fantasy5.json',
+    bonusBallLabel: '',
+    isDemoData: true,
+    nextDrawDate: () => {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      tomorrow.setHours(18, 30, 0, 0); // 6:30 PM PT
+      return tomorrow;
+    },
+  },
+  {
+    id: 'daily3',
+    name: 'Daily 3',
+    region: 'California',
+    primaryColor: 'bg-blue-600',
+    secondaryColor: 'bg-blue-400',
+    primaryCount: 3,
+    primaryMax: 9,
+    secondaryCount: 0,
+    secondaryMax: 0,
+    description: 'Pick 3 digits - Midday & Evening draws daily',
+    drawDays: ['Daily (Midday & Evening)'],
+    dataFile: '/data/daily3.json',
+    bonusBallLabel: '',
+    isDemoData: true,
+    nextDrawDate: () => {
+      const today = new Date();
+      const hour = today.getHours();
+
+      // If before 12:30 PM, next draw is midday today
+      if (hour < 12 || (hour === 12 && today.getMinutes() < 30)) {
+        const nextDraw = new Date(today);
+        nextDraw.setHours(12, 30, 0, 0);
+        return nextDraw;
+      }
+      // If before 6:30 PM, next draw is evening today
+      else if (hour < 18 || (hour === 18 && today.getMinutes() < 30)) {
+        const nextDraw = new Date(today);
+        nextDraw.setHours(18, 30, 0, 0);
+        return nextDraw;
+      }
+      // Otherwise, next draw is midday tomorrow
+      else {
+        const nextDraw = new Date(today);
+        nextDraw.setDate(today.getDate() + 1);
+        nextDraw.setHours(12, 30, 0, 0);
+        return nextDraw;
+      }
+    },
+  },
+  {
+    id: 'daily4',
+    name: 'Daily 4',
+    region: 'California',
+    primaryColor: 'bg-green-600',
+    secondaryColor: 'bg-green-400',
+    primaryCount: 4,
+    primaryMax: 9,
+    secondaryCount: 0,
+    secondaryMax: 0,
+    description: 'Pick 4 digits - Midday & Evening draws daily',
+    drawDays: ['Daily (Midday & Evening)'],
+    dataFile: '/data/daily4.json',
+    bonusBallLabel: '',
+    isDemoData: true,
+    nextDrawDate: () => {
+      const today = new Date();
+      const hour = today.getHours();
+
+      // If before 12:30 PM, next draw is midday today
+      if (hour < 12 || (hour === 12 && today.getMinutes() < 30)) {
+        const nextDraw = new Date(today);
+        nextDraw.setHours(12, 30, 0, 0);
+        return nextDraw;
+      }
+      // If before 6:30 PM, next draw is evening today
+      else if (hour < 18 || (hour === 18 && today.getMinutes() < 30)) {
+        const nextDraw = new Date(today);
+        nextDraw.setHours(18, 30, 0, 0);
+        return nextDraw;
+      }
+      // Otherwise, next draw is midday tomorrow
+      else {
+        const nextDraw = new Date(today);
+        nextDraw.setDate(today.getDate() + 1);
+        nextDraw.setHours(12, 30, 0, 0);
+        return nextDraw;
+      }
     },
   },
 ];

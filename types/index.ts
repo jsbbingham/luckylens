@@ -13,6 +13,7 @@ export interface LotteryGame {
   dataFile?: string;
   nextDrawDate: () => Date;
   bonusBallLabel: string;
+  isDemoData?: boolean; // Flag for games using static demo data
 }
 
 export interface GeneratedSet {
@@ -35,6 +36,7 @@ export interface HistoricalDraw {
   secondaryNumbers: number[];
   jackpot: string;
   winners: number;
+  postedAt?: Date; // When results were officially posted/synced
 }
 
 export interface DrawResultJson {

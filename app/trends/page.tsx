@@ -114,7 +114,7 @@ export default function TrendsPage() {
       {hasData && !isLoading && (
         <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-lucky-primary/10 dark:bg-lucky-primary/20 text-lucky-primary dark:text-lucky-primary rounded-full text-sm">
           <BarChart3 className="w-4 h-4" />
-          Based on {drawCount} draws from {dateRange.earliest} to {dateRange.latest}
+          Based on {drawCount} draws from {dateRange.earliest} to {dateRange.latest} (All times ET)
         </div>
       )}
 

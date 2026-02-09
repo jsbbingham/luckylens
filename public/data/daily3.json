@@ -1,0 +1,12 @@
+[
+  {"drawDate": "2026-02-08", "mainBalls": [5, 7, 9], "bonusBall": 0, "jackpotAmount": "$500 (Straight)"},
+  {"drawDate": "2026-02-07", "mainBalls": [2, 4, 8], "bonusBall": 0, "jackpotAmount": "$500 (Straight)"},
+  {"drawDate": "2026-02-06", "mainBalls": [1, 3, 6], "bonusBall": 0, "jackpotAmount": "$500 (Straight)"},
+  {"drawDate": "2026-02-05", "mainBalls": [4, 6, 9], "bonusBall": 0, "jackpotAmount": "$500 (Straight)"},
+  {"drawDate": "2026-02-04", "mainBalls": [0, 2, 5], "bonusBall": 0, "jackpotAmount": "$500 (Straight)"},
+  {"drawDate": "2026-02-03", "mainBalls": [3, 5, 8], "bonusBall": 0, "jackpotAmount": "$500 (Straight)"},
+  {"drawDate": "2026-02-02", "mainBalls": [1, 4, 7], "bonusBall": 0, "jackpotAmount": "$500 (Straight)"},
+  {"drawDate": "2026-02-01", "mainBalls": [2, 6, 9], "bonusBall": 0, "jackpotAmount": "$500 (Straight)"},
+  {"drawDate": "2026-01-31", "mainBalls": [0, 3, 5], "bonusBall": 0, "jackpotAmount": "$500 (Straight)"},
+  {"drawDate": "2026-01-30", "mainBalls": [4, 7, 8], "bonusBall": 0, "jackpotAmount": "$500 (Straight)"}
+]

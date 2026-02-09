@@ -11,7 +11,7 @@ import { getDefaultGame, getGameById } from '@/lib/games';
 import { useHistory } from '@/hooks/useHistory';
 import { useDBAvailable } from '@/hooks/useDBAvailable';
 import { LotteryGame, HistoricalDraw } from '@/types';
-import { formatRelativeTime, formatDate } from '@/lib/utils';
+import { formatRelativeTime, formatDate, formatDateTimeWithTimezone } from '@/lib/utils';
 import { db } from '@/lib/db';
 
 export default function HomePage() {
@@ -111,9 +111,9 @@ export default function HomePage() {
           value={lastDrawDisplay}
           icon={<Calendar className="w-4 h-4" />}
         />
-        <QuickStat 
-          label="Next Draw" 
-          value={formatRelativeTime(nextDraw)}
+        <QuickStat
+          label="Next Draw"
+          value={`${formatRelativeTime(nextDraw)} (${formatDateTimeWithTimezone(nextDraw)})`}
           icon={<Calendar className="w-4 h-4" />}
         />
       </div>

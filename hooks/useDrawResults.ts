@@ -25,7 +25,7 @@ export function useDrawResults() {
       gameId,
       primaryNumbers: result.mainBalls,
       secondaryNumbers: [result.bonusBall],
-      jackpot: result.jackpot || undefined,
+      jackpot: result.jackpot || '',
       winners: 0,
     };
   }, []);
