@@ -3,12 +3,35 @@ import { useCallback, useState, useEffect } from 'react';
 import { db } from '@/lib/db';
 import { DrawResultJson, HistoricalDraw } from '@/types';
 import { getGameById } from '@/lib/games';
+import { 
+  fetchLatestResults, 
+  fetchHistoricalResults, 
+  isSupportedByMagayo,
+  MagayoResult 
+} from '@/lib/magayo';
 
 export function useDrawResults() {
   const [isSyncing, setIsSyncing] = useState(false);
 
   /**
-   * Sync results by fetching static JSON data and storing in Dexie.
+   * Convert Magayo result to HistoricalDraw format
+   */
+  const magayoToHistoricalDraw = useCallback((
+    gameId: string,
+    result: MagayoResult
+  ): HistoricalDraw => {
+    return {
+      date: new Date(result.date),
+      gameId,
+      primaryNumbers: result.mainBalls,
+      secondaryNumbers: [result.bonusBall],
+      jackpot: result.jackpot || undefined,
+      winners: 0,
+    };
+  }, []);
+
+  /**
+   * Sync results - uses Magayo API for supported games, falls back to static JSON
    */
   const syncResults = useCallback(async (
     gameId: string
@@ -16,8 +39,36 @@ export function useDrawResults() {
     try {
       setIsSyncing(true);
 
+      // Try Magayo API first for supported games
+      if (isSupportedByMagayo(gameId)) {
+        const results = await fetchHistoricalResults(gameId, 30);
+        
+        if (results.length > 0) {
+          // Convert and store in Dexie
+          for (const result of results) {
+            const draw = magayoToHistoricalDraw(gameId, result);
+            
+            // Check for existing entry
+            const existing = await db.historicalDraws
+              .where({ gameId, date: draw.date })
+              .first();
+
+            if (!existing) {
+              await db.historicalDraws.add(draw);
+            }
+          }
+
+          // Update last sync date
+          localStorage.setItem(`lastSync_${gameId}`, new Date().toISOString());
+          
+          return { success: true, count: results.length };
+        }
+      }
+
+      // Fallback to static JSON for unsupported games or API failure
       const game = getGameById(gameId);
       const dataPath = game?.dataFile || `/data/${gameId}.json`;
+      
       const response = await fetch(dataPath);
 
       if (!response.ok) {
@@ -36,7 +87,6 @@ export function useDrawResults() {
       }));
 
       // Upsert results to Dexie
-      // Check for existing entries to avoid duplicates
       for (const result of results) {
         const existing = await db.historicalDraws
           .where({ gameId, date: result.date })
@@ -61,7 +111,29 @@ export function useDrawResults() {
     } finally {
       setIsSyncing(false);
     }
-  }, []);
+  }, [magayoToHistoricalDraw]);
+
+  /**
+   * Fetch latest single result from Magayo API
+   */
+  const fetchLatestFromMagayo = useCallback(async (
+    gameId: string
+  ): Promise<HistoricalDraw | null> => {
+    if (!isSupportedByMagayo(gameId)) {
+      return null;
+    }
+
+    try {
+      const result = await fetchLatestResults(gameId);
+      if (result) {
+        return magayoToHistoricalDraw(gameId, result);
+      }
+    } catch (error) {
+      console.error('Failed to fetch from Magayo:', error);
+    }
+    
+    return null;
+  }, [magayoToHistoricalDraw]);
 
   /**
    * Get draw results for a game with optional filtering.
@@ -216,5 +288,6 @@ export function useDrawResults() {
     useResults,
     getAvailableMonths,
     isSyncing,
+    fetchLatestFromMagayo,
   };
 }
