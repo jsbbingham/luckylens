@@ -21,7 +21,7 @@ export default function ResultsPage() {
   const [offset, setOffset] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const [showClearConfirm, setShowClearConfirm] = useState(false);
-  const [autoSyncAttempted, setAutoSyncAttempted] = useState(false);
+  const [dataLoaded, setDataLoaded] = useState(false);
 
   const { 
     syncResults, 
@@ -29,7 +29,6 @@ export default function ResultsPage() {
     getResultCount, 
     getLastSyncDate,
     getAvailableMonths,
-    hasDrawResults,
     clearResults,
     isSyncing 
   } = useDrawResults();
@@ -37,7 +36,7 @@ export default function ResultsPage() {
 
   const limit = 20;
 
-  // Load results for selected game
+  // Load results from local database only (no API calls)
   const loadResults = useCallback(async (resetOffset = true) => {
     setIsLoading(true);
     const newOffset = resetOffset ? 0 : offset;
@@ -61,66 +60,38 @@ export default function ResultsPage() {
       } else {
         setOffset(data.length);
       }
+      
+      // Load available months
+      const months = await getAvailableMonths(selectedGame.id);
+      setAvailableMonths(months);
+      
+      setDataLoaded(true);
     } catch (error) {
       showToast('Failed to load results', 'error');
     } finally {
       setIsLoading(false);
     }
-  }, [selectedGame.id, selectedMonth, offset, getDrawResults, showToast]);
+  }, [selectedGame.id, selectedMonth, offset, getDrawResults, getAvailableMonths, showToast]);
 
-  // Auto-sync on first visit if no data exists
+  // Load local data when game changes (no API calls)
   useEffect(() => {
-    const checkAndSync = async () => {
-      if (autoSyncAttempted) return;
-      
-      const hasData = await hasDrawResults(selectedGame.id);
-      if (!hasData) {
-        setIsLoading(true);
-        try {
-          const { success, count, error } = await syncResults(selectedGame.id);
-          if (success) {
-            showToast(`Synced! ${count} draws loaded for ${selectedGame.name}`, 'success');
-            await loadResults(true);
-            // Load available months after sync
-            const months = await getAvailableMonths(selectedGame.id);
-            setAvailableMonths(months);
-          } else {
-            showToast(error || 'Sync failed', 'error');
-          }
-        } catch (err) {
-          showToast('Auto-sync failed', 'error');
-        } finally {
-          setIsLoading(false);
-          setAutoSyncAttempted(true);
-        }
-      } else {
-        // Load existing data
-        await loadResults(true);
-        const months = await getAvailableMonths(selectedGame.id);
-        setAvailableMonths(months);
-        setAutoSyncAttempted(true);
-      }
-    };
-    
-    checkAndSync();
-  }, [selectedGame.id]); // Only run when game changes
+    loadResults(true);
+  }, [selectedGame.id]);
 
   // Reload when month filter changes
   useEffect(() => {
-    if (autoSyncAttempted) {
-      loadResults(true);
-    }
+    loadResults(true);
   }, [selectedMonth]);
 
+  // Manual sync - only API call in the app, triggered by user
   const handleSync = async () => {
     setIsLoading(true);
     try {
       const { success, count, error } = await syncResults(selectedGame.id);
       if (success) {
         showToast(`Synced! ${count} draws loaded for ${selectedGame.name}`, 'success');
+        // Reload local data after successful sync
         await loadResults(true);
-        const months = await getAvailableMonths(selectedGame.id);
-        setAvailableMonths(months);
       } else {
         showToast(error || 'Sync failed', 'error');
       }
@@ -246,8 +217,11 @@ export default function ResultsPage() {
             <h3 className="text-lg font-semibold text-lucky-text dark:text-lucky-dark-text mb-2">
               No results available
             </h3>
-            <p className="text-lucky-text-muted dark:text-lucky-dark-text-muted mb-4">
-              No results found for {selectedGame.name}. Tap Sync to load past winning numbers.
+            <p className="text-lucky-text-muted dark:text-lucky-dark-text-muted mb-2">
+              No local data found for {selectedGame.name}.
+            </p>
+            <p className="text-sm text-lucky-text-muted dark:text-lucky-dark-text-muted mb-4">
+              Tap &quot;Sync Results&quot; to fetch the latest winning numbers from the lottery API.
             </p>
             <button
               onClick={handleSync}
