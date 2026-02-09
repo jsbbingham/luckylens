@@ -10,6 +10,10 @@ const GAME_ID_MAP: Record<string, string> = {
   'megamillions': 'us_mega_millions',
   'cash4life': 'us_cash4life',
   'lottoamerica': 'us_lotto_america',
+  'superlottoplus': 'us_ca_lotto',
+  'fantasy5': 'us_ca_fantasy',
+  'daily3': 'us_ca_daily3_eve', // Using evening draw as default
+  'daily4': 'us_ca_daily4',
   // Lucky for Life is not supported by Magayo
 };
 
@@ -50,16 +54,36 @@ export async function fetchLatestResults(gameId: string): Promise<MagayoResult |
     if (data.error !== 0) {
       throw new Error(`Magayo API error: ${data.error}`);
     }
-    
-    // Parse results string: "25,36,42,51,58,06,2"
-    // Format: main ball 1-5, bonus ball, multiplier (optional)
-    const parts = data.results.split(',').map((p: string) => parseInt(p, 10));
-    
+
+    // Handle different result formats
+    // Daily 3/4: "845" or "0065" (single string of digits)
+    // Other games: "25,36,42,51,58,06,2" (comma-separated)
+    const resultsStr = data.results;
+
+    // Check if this is a Daily 3 or Daily 4 game (no commas in results)
+    if (!resultsStr.includes(',')) {
+      // Split string into individual digits
+      const digits = resultsStr.split('').map((d: string) => parseInt(d, 10));
+      return {
+        date: data.draw,
+        mainBalls: digits,
+        bonusBall: 0, // No bonus ball for daily games
+        multiplier: undefined,
+      };
+    }
+
+    // Standard comma-separated format
+    const parts = resultsStr.split(',').map((p: string) => parseInt(p, 10));
+
+    // Games without bonus balls (Fantasy 5, etc.)
+    const gamesWithoutBonus = ['us_ca_fantasy'];
+    const hasBonus = !gamesWithoutBonus.includes(magayoGameId);
+
     return {
       date: data.draw,
-      mainBalls: parts.slice(0, 5),
-      bonusBall: parts[5],
-      multiplier: parts[6] || undefined,
+      mainBalls: hasBonus ? parts.slice(0, -1) : parts,
+      bonusBall: hasBonus ? parts[parts.length - 1] : 0,
+      multiplier: undefined,
     };
   } catch (error) {
     console.error('Magayo API error:', error);

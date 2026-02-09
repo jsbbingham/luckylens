@@ -185,7 +185,6 @@ export const LOTTERY_GAMES: LotteryGame[] = [
     drawDays: ['Wednesday', 'Saturday'],
     dataFile: '/data/superlottoplus.json',
     bonusBallLabel: 'Mega',
-    isDemoData: true,
     nextDrawDate: () => {
       const today = new Date();
       const drawDays = [3, 6]; // Wednesday, Saturday
@@ -223,7 +222,6 @@ export const LOTTERY_GAMES: LotteryGame[] = [
     drawDays: ['Daily'],
     dataFile: '/data/fantasy5.json',
     bonusBallLabel: '',
-    isDemoData: true,
     nextDrawDate: () => {
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
@@ -245,7 +243,6 @@ export const LOTTERY_GAMES: LotteryGame[] = [
     drawDays: ['Daily (Midday & Evening)'],
     dataFile: '/data/daily3.json',
     bonusBallLabel: '',
-    isDemoData: true,
     nextDrawDate: () => {
       const today = new Date();
       const hour = today.getHours();
@@ -285,7 +282,6 @@ export const LOTTERY_GAMES: LotteryGame[] = [
     drawDays: ['Daily (Midday & Evening)'],
     dataFile: '/data/daily4.json',
     bonusBallLabel: '',
-    isDemoData: true,
     nextDrawDate: () => {
       const today = new Date();
       const hour = today.getHours();
