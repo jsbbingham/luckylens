@@ -17,7 +17,7 @@ export const LOTTERY_GAMES: LotteryGame[] = [
     bonusBallLabel: 'Powerball',
     nextDrawDate: () => {
       const today = new Date();
-      const drawDays = [1, 3, 6];
+      const drawDays = [1, 3, 6]; // Mon, Wed, Sat
       const todayDay = today.getDay();
       let daysUntilDraw = 0;
 
@@ -34,7 +34,7 @@ export const LOTTERY_GAMES: LotteryGame[] = [
 
       const nextDraw = new Date(today);
       nextDraw.setDate(today.getDate() + daysUntilDraw);
-      nextDraw.setHours(22, 59, 0, 0);
+      nextDraw.setHours(19, 59, 0, 0); // 7:59 PM PT (10:59 PM ET)
       return nextDraw;
     },
   },
@@ -54,7 +54,7 @@ export const LOTTERY_GAMES: LotteryGame[] = [
     bonusBallLabel: 'Mega Ball',
     nextDrawDate: () => {
       const today = new Date();
-      const drawDays = [2, 5];
+      const drawDays = [2, 5]; // Tue, Fri
       const todayDay = today.getDay();
       let daysUntilDraw = 0;
 
@@ -71,7 +71,7 @@ export const LOTTERY_GAMES: LotteryGame[] = [
 
       const nextDraw = new Date(today);
       nextDraw.setDate(today.getDate() + daysUntilDraw);
-      nextDraw.setHours(23, 0, 0, 0);
+      nextDraw.setHours(20, 0, 0, 0); // 8:00 PM PT (11:00 PM ET)
       return nextDraw;
     },
   },
@@ -92,7 +92,7 @@ export const LOTTERY_GAMES: LotteryGame[] = [
     isDemoData: true,
     nextDrawDate: () => {
       const today = new Date();
-      const drawDays = [1, 4];
+      const drawDays = [1, 4]; // Mon, Thu
       const todayDay = today.getDay();
       let daysUntilDraw = 0;
 
@@ -109,7 +109,7 @@ export const LOTTERY_GAMES: LotteryGame[] = [
 
       const nextDraw = new Date(today);
       nextDraw.setDate(today.getDate() + daysUntilDraw);
-      nextDraw.setHours(22, 35, 0, 0);
+      nextDraw.setHours(19, 38, 0, 0); // 7:38 PM PT (10:38 PM ET)
       return nextDraw;
     },
   },
@@ -130,7 +130,7 @@ export const LOTTERY_GAMES: LotteryGame[] = [
     nextDrawDate: () => {
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
-      tomorrow.setHours(21, 0, 0, 0);
+      tomorrow.setHours(18, 0, 0, 0); // 6:00 PM PT (9:00 PM ET)
       return tomorrow;
     },
   },
@@ -150,7 +150,7 @@ export const LOTTERY_GAMES: LotteryGame[] = [
     bonusBallLabel: 'Star Ball',
     nextDrawDate: () => {
       const today = new Date();
-      const drawDays = [1, 3, 6];
+      const drawDays = [1, 3, 6]; // Mon, Wed, Sat
       const todayDay = today.getDay();
       let daysUntilDraw = 0;
 
@@ -167,7 +167,7 @@ export const LOTTERY_GAMES: LotteryGame[] = [
 
       const nextDraw = new Date(today);
       nextDraw.setDate(today.getDate() + daysUntilDraw);
-      nextDraw.setHours(22, 0, 0, 0);
+      nextDraw.setHours(19, 15, 0, 0); // 7:15 PM PT (9:15 PM CT / 10:15 PM ET)
       return nextDraw;
     },
   },
