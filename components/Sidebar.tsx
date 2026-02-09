@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { Home, Dices, Hand, History, BarChart3, Settings, FileText, Shield, Trophy } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+import { useEffect } from 'react';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -26,6 +27,18 @@ const secondaryNavItems = [
 
 export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
+
+  // Prevent body scroll when sidebar is open on mobile
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add('sidebar-open');
+    } else {
+      document.body.classList.remove('sidebar-open');
+    }
+    return () => {
+      document.body.classList.remove('sidebar-open');
+    };
+  }, [isOpen]);
 
   const NavItem = ({ icon: Icon, label, href }: { icon: typeof Home; label: string; href: string }) => {
     const isActive = pathname === href;
@@ -54,7 +67,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       {/* Mobile overlay */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/50 z-30 lg:hidden touch-none"
           onClick={onClose}
         />
       )}
@@ -62,14 +75,17 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       {/* Sidebar */}
       <aside
         className={`
-          fixed left-0 top-16 bottom-0 w-64 z-50
+          fixed left-0 top-16 bottom-16 lg:bottom-0 w-64 z-50
           bg-lucky-surface dark:bg-lucky-dark-surface-elevated
           border-r border-lucky-border dark:border-lucky-dark-border
           transform transition-transform duration-300 ease-in-out
           lg:translate-x-0 lg:static lg:h-[calc(100vh-4rem)]
           ${isOpen ? 'translate-x-0' : '-translate-x-full'}
           overflow-y-auto
+          overscroll-behavior-contain
+          scrollbar-thin scrollbar-thumb-lucky-border scrollbar-track-transparent
         `}
+        style={{ WebkitOverflowScrolling: 'touch' }}
       >
         <div className="p-4 space-y-2">
           <p className="px-4 text-xs font-semibold text-lucky-text-muted dark:text-lucky-dark-text-muted uppercase tracking-wider">
