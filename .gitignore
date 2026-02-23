@@ -54,3 +54,4 @@ public/workbox-*.js.map
 .vercel
 .netlify
 deploy-vercel.sh
+tsconfig.tsbuildinfo
