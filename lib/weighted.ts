@@ -1,3 +1,8 @@
+/**
+ * @deprecated Frequency-weighted generation has been superseded by the
+ * strategic generator in `lib/strategic-random.ts`. This file is retained
+ * for backward compatibility but is no longer imported by active pages.
+ */
 import { LotteryGame } from '@/types';
 import { cryptoRandomInt, generateRandomSet, generateMultipleSets } from './random';
 

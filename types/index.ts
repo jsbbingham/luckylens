@@ -1,3 +1,10 @@
+export interface PrizeTier {
+  label: string;       // e.g. "5+PB", "5+0", "4+1"
+  prize: number;       // fixed prize in USD (0 = jackpot placeholder)
+  isJackpot: boolean;
+  odds: number;        // 1-in-X value (the X)
+}
+
 export interface LotteryGame {
   id: string;
   name: string;
@@ -14,6 +21,10 @@ export interface LotteryGame {
   nextDrawDate: () => Date;
   bonusBallLabel: string;
   isDemoData?: boolean; // Flag for games using static demo data
+  ticketCost: number;
+  prizeTiers: PrizeTier[];
+  supportsWheeling: boolean;
+  supportsBirthdayFilter: boolean;
 }
 
 export interface GeneratedSet {
@@ -22,7 +33,7 @@ export interface GeneratedSet {
   gameId: string;
   primaryNumbers: number[];
   secondaryNumbers: number[];
-  generationType: 'random' | 'trend' | 'manual';
+  generationType: 'random' | 'trend' | 'manual' | 'strategic' | 'wheeling';
   saved: boolean;
   notes?: string;
   batchId?: string;
@@ -81,4 +92,47 @@ export type DrawResult = HistoricalDraw;
 // Additional properties for history display
 export interface HistorySet extends GeneratedSet {
   id: number;
+}
+
+// --- Wheeling ---
+
+export interface CoverageStats {
+  totalTriples: number;
+  coveredTriples: number;
+  coveragePercent: number;
+  ticketCount: number;
+  isFull: boolean;
+}
+
+export interface WheelingResult {
+  tickets: number[][];
+  coverageStats: CoverageStats;
+  isFull: boolean;
+  disclaimer?: string;
+}
+
+// --- Expected Value ---
+
+export interface TierEV {
+  tier: PrizeTier;
+  afterTaxPrize: number;
+  probability: number;
+  evContribution: number;
+}
+
+export interface EVResult {
+  ev: number;
+  meterValue: number;          // 0–100 scale
+  verdict: 'buy' | 'approaching' | 'negative';
+  ticketCost: number;
+  jackpotAmount: number;
+  lumpSumAmount: number;
+  tierBreakdown: TierEV[];
+}
+
+export interface JackpotData {
+  gameId: string;
+  jackpotAmount: number;
+  lumpSumAmount?: number;
+  fetchedAt: Date;
 }

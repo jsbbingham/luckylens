@@ -1,5 +1,10 @@
 'use client';
 
+/**
+ * @deprecated Trend-based frequency hook is no longer the primary analysis
+ * surface. The frequency table on the Analysis page still consumes this hook,
+ * but new EV-based analysis is provided by `hooks/useExpectedValue.ts`.
+ */
 import { useEffect, useState, useMemo, useCallback } from 'react';
 import { db } from '@/lib/db';
 import { HistoricalDraw, LotteryGame } from '@/types';

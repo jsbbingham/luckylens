@@ -15,7 +15,7 @@ const mainNavItems = [
   { icon: Dices, label: 'Generate Numbers', href: '/generate' },
   { icon: Hand, label: 'Self-Pick', href: '/self-pick' },
   { icon: History, label: 'History', href: '/history' },
-  { icon: BarChart3, label: 'Trends', href: '/trends' },
+  { icon: BarChart3, label: 'Analysis', href: '/trends' },
   { icon: Trophy, label: 'Results', href: '/results' },
 ];
 

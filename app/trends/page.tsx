@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import { BarChart3, Flame, Snowflake, ArrowUpDown, ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
 import { GameSelector } from '@/components/GameSelector';
 import { BallDisplay } from '@/components/BallDisplay';
+import EVDashboard from '@/components/EVDashboard';
 import { getDefaultGame, getGameById, LOTTERY_GAMES } from '@/lib/games';
 import { LotteryGame } from '@/types';
 import { useTrends } from '@/hooks/useTrends';
@@ -89,13 +90,13 @@ export default function TrendsPage() {
       {/* Header */}
       <div className="text-center py-4">
         <div className="flex items-center justify-center gap-3 mb-2">
-          <span className="text-3xl">📊</span>
+          <BarChart3 className="w-8 h-8 text-lucky-primary" />
           <h1 className="text-3xl font-bold text-lucky-text dark:text-lucky-dark-text">
-            Number Trends
+            Analysis
           </h1>
         </div>
         <p className="text-lucky-text-muted dark:text-lucky-dark-text-muted">
-          Analyze historical winning number patterns
+          Expected value and historical frequency analysis
         </p>
       </div>
 
@@ -109,6 +110,9 @@ export default function TrendsPage() {
           onSelectGame={setSelectedGame}
         />
       </div>
+
+      {/* EV Dashboard */}
+      <EVDashboard game={selectedGame} />
 
       {/* Data Period Indicator */}
       {hasData && !isLoading && (
@@ -151,16 +155,13 @@ export default function TrendsPage() {
       {/* Trends Content */}
       {!isLoading && hasData && (
         <div className="space-y-8">
-          {/* Hot Numbers Section */}
+          {/* High-Frequency Numbers Section */}
           <section className="bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 rounded-xl p-6 border border-orange-200 dark:border-orange-800">
             <div className="flex items-center gap-2 mb-4">
               <Flame className="w-6 h-6 text-orange-500" />
               <h2 className="text-xl font-bold text-lucky-text dark:text-lucky-dark-text">
-                Hot Numbers
+                High-Frequency Numbers (Historical)
               </h2>
-              <span className="text-sm text-lucky-text-muted dark:text-lucky-dark-text-muted">
-                — Most Frequently Drawn
-              </span>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-5 lg:grid-cols-10 gap-4">
               {hotMain.map((item, index) => (
@@ -187,16 +188,13 @@ export default function TrendsPage() {
             </div>
           </section>
 
-          {/* Cold Numbers Section */}
+          {/* Low-Frequency Numbers Section */}
           <section className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-xl p-6 border border-blue-200 dark:border-blue-800">
             <div className="flex items-center gap-2 mb-4">
               <Snowflake className="w-6 h-6 text-blue-500" />
               <h2 className="text-xl font-bold text-lucky-text dark:text-lucky-dark-text">
-                Cold Numbers
+                Low-Frequency Numbers (Historical)
               </h2>
-              <span className="text-sm text-lucky-text-muted dark:text-lucky-dark-text-muted">
-                — Least Frequently Drawn
-              </span>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-5 lg:grid-cols-10 gap-4">
               {coldMain.map((item, index) => (
@@ -333,16 +331,16 @@ export default function TrendsPage() {
             </div>
           </div>
 
-          {/* Full Frequency Table */}
+          {/* Historical Frequency Analysis Table */}
           <section className="bg-lucky-surface dark:bg-lucky-dark-surface rounded-xl border border-lucky-border dark:border-lucky-dark-border overflow-hidden">
             <button
               onClick={() => setIsTableOpen(!isTableOpen)}
               className="w-full flex items-center justify-between p-4 hover:bg-lucky-surface-hover dark:hover:bg-lucky-dark-surface-hover transition-colors"
             >
               <div className="flex items-center gap-2">
-                <span className="text-xl">📋</span>
+                <BarChart3 className="w-5 h-5 text-lucky-text-muted" />
                 <h2 className="font-semibold text-lucky-text dark:text-lucky-dark-text">
-                  All Number Frequencies
+                  Historical Frequency Analysis
                 </h2>
               </div>
               {isTableOpen ? (
